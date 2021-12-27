@@ -5,8 +5,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Getter @Setter
 public class Movie {
 

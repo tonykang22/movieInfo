@@ -102,7 +102,7 @@ public class MovieController {
 
         String messageBody = StreamUtils.copyToString(urlConnection.getInputStream(), StandardCharsets.UTF_8);
         MovieDto data = objectmapper.readValue(messageBody, MovieDto.class);
-        log.info("popular list has been called.");
+        log.info("popular list(page = {}) has been called.", page);
 
         return data;
     }
