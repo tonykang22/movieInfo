@@ -3,13 +3,13 @@ package com.movienerds.movieinfo.popular;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+//import javax.persistence.*;
 
 @Getter @Setter
 public class Movie {
 
-    @Id
-    @Column(name = "popular_id")
+//    @Id
+//    @Column(name = "popular_id")
     private Long id;
 
     private String title;

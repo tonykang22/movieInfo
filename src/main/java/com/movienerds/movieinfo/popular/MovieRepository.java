@@ -3,7 +3,7 @@ package com.movienerds.movieinfo.popular;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
+//import javax.persistence.EntityManager;
 import java.util.List;
 
 @Repository
