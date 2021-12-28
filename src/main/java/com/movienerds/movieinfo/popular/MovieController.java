@@ -1,6 +1,5 @@
 package com.movienerds.movieinfo.popular;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movienerds.movieinfo.popular.dto.MovieDto;
 import com.movienerds.movieinfo.popular.dto.ResultsDto;
