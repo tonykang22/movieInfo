@@ -10,12 +10,10 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -28,7 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 @Slf4j
-@Service
+@RestController
 @RequestMapping("/api")
 @NoArgsConstructor
 public class MovieController {
@@ -86,7 +84,7 @@ public class MovieController {
     }
 
     //String version
-    @ResponseBody
+
     @GetMapping("/popular/{page}")
     public MovieDto popularList(@PathVariable Integer page) throws IOException {
 
