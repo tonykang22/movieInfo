@@ -1,7 +1,8 @@
 package com.movienerds.movieinfo.popular;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.movienerds.movieinfo.popular.dto.MovieDto;
+import com.movienerds.movieinfo.popular.dto.MoviesDto;
+import com.movienerds.movieinfo.popular.dto.PopularDto;
 import com.movienerds.movieinfo.popular.dto.ResultsDto;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,16 +11,12 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -36,7 +33,7 @@ public class MovieController {
     private ObjectMapper objectmapper = new ObjectMapper();
 
     @GetMapping("/movies")
-    public MovieDto movieList() {
+    public MoviesDto movieList() {
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -52,11 +49,11 @@ public class MovieController {
 
         log.info("movieList has been called.");
 
-        return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, httpEntity, MovieDto.class).getBody();
+        return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, httpEntity, MoviesDto.class).getBody();
     }
 
     @GetMapping("/movies/{movieId}")
-    public MovieDto movieInfo(@PathVariable Integer movieId) throws IOException {
+    public PopularDto movieInfo(@PathVariable Integer movieId) throws IOException {
         StringBuilder result = new StringBuilder();
         String urlStr = "http://api.themoviedb.org/3/movie/" +
                 movieId +
@@ -68,14 +65,14 @@ public class MovieController {
         urlConnection.setRequestMethod("GET");
 
         String messageBody = StreamUtils.copyToString(urlConnection.getInputStream(), StandardCharsets.UTF_8);
-        MovieDto data = objectmapper.readValue(messageBody, MovieDto.class);
+        PopularDto data = objectmapper.readValue(messageBody, PopularDto.class);
         log.info("moive info(id = {}) has been called.", movieId);
 
         return data;
     }
 
     @GetMapping("/movies/popular")
-    public MovieDto popularList(@RequestParam Integer page) throws IOException {
+    public PopularDto popularList(@RequestParam Integer page) throws IOException {
 
         String urlStr = "https://api.themoviedb.org/3/movie/popular" +
                 "?api_key=" +
@@ -87,7 +84,7 @@ public class MovieController {
         urlConnection.setRequestMethod("GET");
 
         String messageBody = StreamUtils.copyToString(urlConnection.getInputStream(), StandardCharsets.UTF_8);
-        MovieDto data = objectmapper.readValue(messageBody, MovieDto.class);
+        PopularDto data = objectmapper.readValue(messageBody, PopularDto.class);
         log.info("popular list(page = {}) has been called.", page);
 
         return data;
@@ -108,7 +105,7 @@ public class MovieController {
         conn.setRequestMethod("GET");
 
         String messageBody = StreamUtils.copyToString(conn.getInputStream(), StandardCharsets.UTF_8);
-        MovieDto movie = objectmapper.readValue(messageBody, MovieDto.class);
+        PopularDto movie = objectmapper.readValue(messageBody, PopularDto.class);
         ArrayList<ResultsDto> results = movie.getResults();
 
         ResultsDto resultsDto = results.get(number);
