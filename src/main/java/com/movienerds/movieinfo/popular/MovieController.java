@@ -11,6 +11,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -23,7 +24,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 @Slf4j
-@RestController
+@Controller
 @NoArgsConstructor
 public class MovieController {
 
@@ -32,6 +33,7 @@ public class MovieController {
 
     private ObjectMapper objectmapper = new ObjectMapper();
 
+    @ResponseBody
     @GetMapping("/movies")
     public MoviesDto movieList() {
 
@@ -52,6 +54,7 @@ public class MovieController {
         return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, httpEntity, MoviesDto.class).getBody();
     }
 
+    @ResponseBody
     @GetMapping("/movies/{movieId}")
     public PopularDto movieInfo(@PathVariable Integer movieId) throws IOException {
         StringBuilder result = new StringBuilder();
@@ -71,6 +74,7 @@ public class MovieController {
         return data;
     }
 
+    @ResponseBody
     @GetMapping("/movies/popular")
     public PopularDto popularList(@RequestParam Integer page) throws IOException {
 
@@ -92,8 +96,8 @@ public class MovieController {
 
     //현재는 1페이지 것만 챙긴,, => 모든 영화 db를 미리 다 받아놓아야 하는가? -> 비효율적일것.
     //=> 어차피 popularId 를 안다는 것이, 이미 그 영화가 View의 목록 중에 있기에 보고 눌렀다고 가정, -> 그 페이지의 것만 챙기면 된다.
-    @GetMapping("/movies/popular/notdecidedyet")
     @ResponseBody
+    @GetMapping("/movies/popular/notdecidedyet")
     private ResultsDto getPopularMovieInfo(@RequestParam Integer page, @RequestParam Integer number) throws IOException {
         String urlStr = "https://api.themoviedb.org/3/movie/popular" +
                 "?api_key=" +
@@ -116,6 +120,11 @@ public class MovieController {
         log.info("popular movie (page = {}, whichOne = {}) was called.", page, number);
 
         return resultsDto;
+    }
+
+    @GetMapping("/")
+    public String welcomePage() {
+        return "movies/welcome";
     }
 }
 
