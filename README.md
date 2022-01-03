@@ -22,17 +22,19 @@ $ java -jar filename.jar
 
 ## 서비스 사용 방법
 
-### - Popular List: 인기 영화 순으로 view에 display
+### - Movie List: 영화 List 불러오기
 ```
-api/popular/{page}
-```
-
-### - Popular List의 Movie Info: 간략한 영화의 정보
-```
-api/popular/{page}/movie/{whichOne}
+/movies
 ```
 
-### - MovieInfo : 자세한 영화의 정보 
+### - Movie Info: 영화 Details 불러오기
 ```
-api/movie/{movieId}
+/movies/{movieId}
 ```
+
+### - Popular List: 인기 순으로 정렬한 영화 List(20 movies per page) 불러오기
+```
+/moives/popular?page={page}
+```
+
+
