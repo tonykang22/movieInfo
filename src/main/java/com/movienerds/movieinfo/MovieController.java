@@ -136,6 +136,8 @@ public class MovieController {
         String messageBody = StreamUtils.copyToString(conn.getInputStream(), StandardCharsets.UTF_8);
         ImagesDto images = objectmapper.readValue(messageBody, ImagesDto.class);
 
+        log.info("movie images(id = {}) has been called.", movieId);
+
         return images;
     }
 
