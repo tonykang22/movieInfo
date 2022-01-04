@@ -21,7 +21,7 @@ public class MovieinfoApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/movies/**")
-						.allowedOrigins("http://54.180.152.93:9000", "http://localhost:9001", "http://localhost:9002")
+						.allowedOrigins("http://54.180.152.93:9000","http://localhost:9000", "http://localhost:9001", "http://localhost:9002")
 						.allowedMethods("GET", "POST")
 						.maxAge(3000);
 			}
