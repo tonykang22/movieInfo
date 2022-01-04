@@ -158,15 +158,6 @@ public class MovieController {
 
         log.info("movie credits(id = {}) has been called.", movieId);
 
-//        ArrayList<PersonDto> castDto = credits.getCast();
-//        ArrayList<PersonDto> crewDto = credits.getCrew();
-//
-//        for (int i = 0; i < castDto.size(); i++) {
-//            PersonDto cast = castDto.get(i);
-//            String name = cast.getName();
-//            log.info("Actor = {} was in this movie", name);
-//        }
-
         return credits;
     }
 
