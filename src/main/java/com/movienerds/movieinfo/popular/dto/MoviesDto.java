@@ -1,7 +1,5 @@
 package com.movienerds.movieinfo.popular.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,21 +10,30 @@ import java.util.ArrayList;
 @Getter @Setter
 public class MoviesDto {
 
-    private Integer page;
-    private ArrayList<ResultsDto> results;
-    @JsonIgnore
-    private ArrayList<String> dates;
-    private Integer total_pages;
-    @JsonIgnore
-    private Integer total_results;
-
-    @Builder
-    public MoviesDto(Integer page, ArrayList<ResultsDto> results, ArrayList<String> dates, Integer total_results, Integer total_pages) {
-        this.page = page;
-        this.results = results;
-        this.dates = dates;
-        this.total_results = total_results;
-        this.total_pages = total_pages;
-    }
+    private boolean adult;
+    private String backdrop_path;
+    private Object belongs_to_collection;
+    private Integer budget;
+    private ArrayList<Object> genres;
+    private String homepage;
+    private Integer id;
+    private String imdb_id;
+    private String original_language;
+    private String original_title;
+    private String overview;
+    private Integer popularity;
+    private String poster_path;
+    private ArrayList<Object> production_companies;
+    private ArrayList<Object> production_countries;
+    private String release_date;
+    private Integer revenue;
+    private Integer runtime;
+    private ArrayList<Object> spoken_languages;
+    private String status;
+    private String tagline;
+    private String title;
+    private boolean video;
+    private Integer vote_average;
+    private Integer vote_count;
 
 }
