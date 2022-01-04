@@ -75,7 +75,7 @@ public class MovieController {
     }
 
     @ResponseBody
-    @GetMapping("/movies/popular")
+    @GetMapping("/movies/populars")
     public PopularDto popularList(@RequestParam Integer page) throws IOException {
 
         String urlStr = "https://api.themoviedb.org/3/movie/popular" +
@@ -97,7 +97,7 @@ public class MovieController {
     //현재는 1페이지 것만 챙긴,, => 모든 영화 db를 미리 다 받아놓아야 하는가? -> 비효율적일것.
     //=> 어차피 popularId 를 안다는 것이, 이미 그 영화가 View의 목록 중에 있기에 보고 눌렀다고 가정, -> 그 페이지의 것만 챙기면 된다.
     @ResponseBody
-    @GetMapping("/movies/popular/notdecidedyet")
+    @GetMapping("/movies/populars/notdecidedyet")
     private ResultsDto getPopularMovieInfo(@RequestParam Integer page, @RequestParam Integer number) throws IOException {
         String urlStr = "https://api.themoviedb.org/3/movie/popular" +
                 "?api_key=" +
