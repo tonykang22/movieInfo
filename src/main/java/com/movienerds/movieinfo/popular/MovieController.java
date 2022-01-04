@@ -120,6 +120,24 @@ public class MovieController {
         return resultsDto;
     }
 
+    @ResponseBody
+    @GetMapping("/movies/{movieId}/images")
+    public ImagesDto getImages(@PathVariable Integer movieId) throws IOException {
+        String urlStr = "https://api.themoviedb.org/3/movie/" +
+                movieId +
+                "images?api_key=" +
+                apiKey;
+        URL url = new URL(urlStr);
+
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+
+        String messageBody = StreamUtils.copyToString(conn.getInputStream(), StandardCharsets.UTF_8);
+        ImagesDto images = objectmapper.readValue(messageBody, ImageDto.class);
+
+        return images;
+    }
+
     @GetMapping("/")
     public String welcomePage() {
         return "movies/welcome";
