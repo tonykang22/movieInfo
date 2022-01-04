@@ -1,10 +1,7 @@
 package com.movienerds.movieinfo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.movienerds.movieinfo.dto.ImagesDto;
-import com.movienerds.movieinfo.dto.MoviesDto;
-import com.movienerds.movieinfo.dto.PopularDto;
-import com.movienerds.movieinfo.dto.ResultsDto;
+import com.movienerds.movieinfo.dto.*;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,15 +29,18 @@ public class MovieController {
     @Value("${api.key}")
     private String apiKey;
 
+    @Value("${url.starts}")
+    private String urlStarts;
+
     private ObjectMapper objectmapper = new ObjectMapper();
 
     @ResponseBody
     @GetMapping("/movies")
-    public MoviesDto movieList() {
+    public PopularDto movieList() {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        String urlStr = "https://api.themoviedb.org/3/movie/now_playing";
+        String urlStr = urlStarts + "now_playing";
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(urlStr)
                 .queryParam("api_key", apiKey);
 
@@ -52,14 +52,14 @@ public class MovieController {
 
         log.info("movieList has been called.");
 
-        return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, httpEntity, MoviesDto.class).getBody();
+        return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, httpEntity, PopularDto.class).getBody();
     }
 
     @ResponseBody
     @GetMapping("/movies/{movieId}")
     public MoviesDto movieInfo(@PathVariable Integer movieId) throws IOException {
         StringBuilder result = new StringBuilder();
-        String urlStr = "http://api.themoviedb.org/3/movie/" +
+        String urlStr = urlStarts +
                 movieId +
                 "?api_key=" +
                 apiKey;
@@ -79,8 +79,8 @@ public class MovieController {
     @GetMapping("/movies/populars")
     public PopularDto popularList(@RequestParam Integer page) throws IOException {
 
-        String urlStr = "https://api.themoviedb.org/3/movie/popular" +
-                "?api_key=" +
+        String urlStr = urlStarts +
+                "popular?api_key=" +
                 apiKey +
                 "&page=" + page;
         URL url = new URL(urlStr);
@@ -98,8 +98,8 @@ public class MovieController {
     @ResponseBody
     @GetMapping("/movies/populars/notdecidedyet")
     private ResultsDto getPopularMovieInfo(@RequestParam Integer page, @RequestParam Integer number) throws IOException {
-        String urlStr = "https://api.themoviedb.org/3/movie/popular" +
-                "?api_key=" +
+        String urlStr = urlStarts +
+                "popular?api_key=" +
                 apiKey +
                 "&page=" + page;
         URL url = new URL(urlStr);
@@ -124,7 +124,7 @@ public class MovieController {
     @ResponseBody
     @GetMapping("/movies/{movieId}/images")
     public ImagesDto getImages(@PathVariable Integer movieId) throws IOException {
-        String urlStr = "https://api.themoviedb.org/3/movie/" +
+        String urlStr = urlStarts +
                 movieId +
                 "/images?api_key=" +
                 apiKey;
@@ -140,6 +140,36 @@ public class MovieController {
 
         return images;
     }
+
+    @ResponseBody
+    @GetMapping("/movies/{movieId}/credits")
+    public CreditsDto getCredits(@PathVariable Integer movieId) throws IOException{
+        String urlStr = urlStarts +
+                movieId +
+                "/credits?api_key=" +
+                apiKey;
+        URL url = new URL(urlStr);
+
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+
+        String messageBody = StreamUtils.copyToString(conn.getInputStream(), StandardCharsets.UTF_8);
+        CreditsDto credits = objectmapper.readValue(messageBody, CreditsDto.class);
+
+        log.info("movie credits(id = {}) has been called.", movieId);
+
+//        ArrayList<PersonDto> castDto = credits.getCast();
+//        ArrayList<PersonDto> crewDto = credits.getCrew();
+//
+//        for (int i = 0; i < castDto.size(); i++) {
+//            PersonDto cast = castDto.get(i);
+//            String name = cast.getName();
+//            log.info("Actor = {} was in this movie", name);
+//        }
+
+        return credits;
+    }
+
 
     @GetMapping("/")
     public String welcomePage() {
