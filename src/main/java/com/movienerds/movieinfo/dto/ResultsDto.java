@@ -1,4 +1,4 @@
-package com.movienerds.movieinfo.popular.dto;
+package com.movienerds.movieinfo.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
@@ -7,8 +7,8 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 
-@Getter @Setter
 @NoArgsConstructor
+@Getter @Setter
 public class ResultsDto {
 
     private String poster_path;

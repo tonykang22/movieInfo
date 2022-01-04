@@ -1,9 +1,7 @@
-package com.movienerds.movieinfo.popular;
+package com.movienerds.movieinfo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.movienerds.movieinfo.popular.dto.MoviesDto;
-import com.movienerds.movieinfo.popular.dto.PopularDto;
-import com.movienerds.movieinfo.popular.dto.ResultsDto;
+import com.movienerds.movieinfo.dto.*;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,15 +29,18 @@ public class MovieController {
     @Value("${api.key}")
     private String apiKey;
 
+    @Value("${url.starts}")
+    private String urlStarts;
+
     private ObjectMapper objectmapper = new ObjectMapper();
 
     @ResponseBody
     @GetMapping("/movies")
-    public MoviesDto movieList() {
+    public PopularDto movieList() {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        String urlStr = "https://api.themoviedb.org/3/movie/now_playing";
+        String urlStr = urlStarts + "now_playing";
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(urlStr)
                 .queryParam("api_key", apiKey);
 
@@ -51,14 +52,14 @@ public class MovieController {
 
         log.info("movieList has been called.");
 
-        return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, httpEntity, MoviesDto.class).getBody();
+        return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, httpEntity, PopularDto.class).getBody();
     }
 
     @ResponseBody
     @GetMapping("/movies/{movieId}")
-    public PopularDto movieInfo(@PathVariable Integer movieId) throws IOException {
+    public MoviesDto movieInfo(@PathVariable Integer movieId) throws IOException {
         StringBuilder result = new StringBuilder();
-        String urlStr = "http://api.themoviedb.org/3/movie/" +
+        String urlStr = urlStarts +
                 movieId +
                 "?api_key=" +
                 apiKey;
@@ -68,7 +69,7 @@ public class MovieController {
         urlConnection.setRequestMethod("GET");
 
         String messageBody = StreamUtils.copyToString(urlConnection.getInputStream(), StandardCharsets.UTF_8);
-        PopularDto data = objectmapper.readValue(messageBody, PopularDto.class);
+        MoviesDto data = objectmapper.readValue(messageBody, MoviesDto.class);
         log.info("moive info(id = {}) has been called.", movieId);
 
         return data;
@@ -78,8 +79,8 @@ public class MovieController {
     @GetMapping("/movies/populars")
     public PopularDto popularList(@RequestParam Integer page) throws IOException {
 
-        String urlStr = "https://api.themoviedb.org/3/movie/popular" +
-                "?api_key=" +
+        String urlStr = urlStarts +
+                "popular?api_key=" +
                 apiKey +
                 "&page=" + page;
         URL url = new URL(urlStr);
@@ -94,13 +95,11 @@ public class MovieController {
         return data;
     }
 
-    //현재는 1페이지 것만 챙긴,, => 모든 영화 db를 미리 다 받아놓아야 하는가? -> 비효율적일것.
-    //=> 어차피 popularId 를 안다는 것이, 이미 그 영화가 View의 목록 중에 있기에 보고 눌렀다고 가정, -> 그 페이지의 것만 챙기면 된다.
     @ResponseBody
     @GetMapping("/movies/populars/notdecidedyet")
     private ResultsDto getPopularMovieInfo(@RequestParam Integer page, @RequestParam Integer number) throws IOException {
-        String urlStr = "https://api.themoviedb.org/3/movie/popular" +
-                "?api_key=" +
+        String urlStr = urlStarts +
+                "popular?api_key=" +
                 apiKey +
                 "&page=" + page;
         URL url = new URL(urlStr);
@@ -121,6 +120,47 @@ public class MovieController {
 
         return resultsDto;
     }
+
+    @ResponseBody
+    @GetMapping("/movies/{movieId}/images")
+    public ImagesDto getImages(@PathVariable Integer movieId) throws IOException {
+        String urlStr = urlStarts +
+                movieId +
+                "/images?api_key=" +
+                apiKey;
+        URL url = new URL(urlStr);
+
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+
+        String messageBody = StreamUtils.copyToString(conn.getInputStream(), StandardCharsets.UTF_8);
+        ImagesDto images = objectmapper.readValue(messageBody, ImagesDto.class);
+
+        log.info("movie images(id = {}) has been called.", movieId);
+
+        return images;
+    }
+
+    @ResponseBody
+    @GetMapping("/movies/{movieId}/credits")
+    public CreditsDto getCredits(@PathVariable Integer movieId) throws IOException{
+        String urlStr = urlStarts +
+                movieId +
+                "/credits?api_key=" +
+                apiKey;
+        URL url = new URL(urlStr);
+
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+
+        String messageBody = StreamUtils.copyToString(conn.getInputStream(), StandardCharsets.UTF_8);
+        CreditsDto credits = objectmapper.readValue(messageBody, CreditsDto.class);
+
+        log.info("movie credits(id = {}) has been called.", movieId);
+
+        return credits;
+    }
+
 
     @GetMapping("/")
     public String welcomePage() {
