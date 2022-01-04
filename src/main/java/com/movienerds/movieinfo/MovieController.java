@@ -1,10 +1,10 @@
-package com.movienerds.movieinfo.popular;
+package com.movienerds.movieinfo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.movienerds.movieinfo.popular.dto.ImagesDto;
-import com.movienerds.movieinfo.popular.dto.MoviesDto;
-import com.movienerds.movieinfo.popular.dto.PopularDto;
-import com.movienerds.movieinfo.popular.dto.ResultsDto;
+import com.movienerds.movieinfo.dto.ImagesDto;
+import com.movienerds.movieinfo.dto.MoviesDto;
+import com.movienerds.movieinfo.dto.PopularDto;
+import com.movienerds.movieinfo.dto.ResultsDto;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

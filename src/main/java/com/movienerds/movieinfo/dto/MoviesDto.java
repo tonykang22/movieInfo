@@ -1,4 +1,4 @@
-package com.movienerds.movieinfo.popular.dto;
+package com.movienerds.movieinfo.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
