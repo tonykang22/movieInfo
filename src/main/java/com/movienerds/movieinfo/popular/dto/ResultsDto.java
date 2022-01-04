@@ -7,8 +7,8 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 
-@Getter @Setter
 @NoArgsConstructor
+@Getter @Setter
 public class ResultsDto {
 
     private String poster_path;

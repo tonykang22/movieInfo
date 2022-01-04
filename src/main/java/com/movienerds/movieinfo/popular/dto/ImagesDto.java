@@ -12,11 +12,11 @@ import java.util.ArrayList;
 public class ImagesDto {
 
     private Integer id;
-    private ArrayList<BackdropsDto> backdrops;
-    private ArrayList<PostersDto> posters;
+    private ArrayList<ImageDetailDto> backdrops;
+    private ArrayList<ImageDetailDto> posters;
 
     @Builder
-    public ImagesDto(Integer id, ArrayList<BackdropsDto> backdrops, ArrayList<PostersDto> posters) {
+    public ImagesDto(Integer id, ArrayList<ImageDetailDto> backdrops, ArrayList<ImageDetailDto> posters) {
         this.id = id;
         this.backdrops = backdrops;
         this.posters = posters;
