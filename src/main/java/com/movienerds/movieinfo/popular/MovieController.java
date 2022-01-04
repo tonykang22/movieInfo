@@ -57,7 +57,7 @@ public class MovieController {
 
     @ResponseBody
     @GetMapping("/movies/{movieId}")
-    public PopularDto movieInfo(@PathVariable Integer movieId) throws IOException {
+    public MoviesDto movieInfo(@PathVariable Integer movieId) throws IOException {
         StringBuilder result = new StringBuilder();
         String urlStr = "http://api.themoviedb.org/3/movie/" +
                 movieId +
@@ -69,7 +69,7 @@ public class MovieController {
         urlConnection.setRequestMethod("GET");
 
         String messageBody = StreamUtils.copyToString(urlConnection.getInputStream(), StandardCharsets.UTF_8);
-        PopularDto data = objectmapper.readValue(messageBody, PopularDto.class);
+        MoviesDto data = objectmapper.readValue(messageBody, MoviesDto.class);
         log.info("moive info(id = {}) has been called.", movieId);
 
         return data;
@@ -126,7 +126,7 @@ public class MovieController {
     public ImagesDto getImages(@PathVariable Integer movieId) throws IOException {
         String urlStr = "https://api.themoviedb.org/3/movie/" +
                 movieId +
-                "images?api_key=" +
+                "/images?api_key=" +
                 apiKey;
         URL url = new URL(urlStr);
 

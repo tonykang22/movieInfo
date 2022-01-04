@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class ImagesDto {
 
     private Integer id;
+    private ArrayList<ImageDetailDto> logos;
     private ArrayList<ImageDetailDto> backdrops;
     private ArrayList<ImageDetailDto> posters;
 
