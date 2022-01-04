@@ -1,6 +1,7 @@
 package com.movienerds.movieinfo.popular;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.movienerds.movieinfo.popular.dto.ImagesDto;
 import com.movienerds.movieinfo.popular.dto.MoviesDto;
 import com.movienerds.movieinfo.popular.dto.PopularDto;
 import com.movienerds.movieinfo.popular.dto.ResultsDto;
@@ -133,7 +134,7 @@ public class MovieController {
         conn.setRequestMethod("GET");
 
         String messageBody = StreamUtils.copyToString(conn.getInputStream(), StandardCharsets.UTF_8);
-        ImagesDto images = objectmapper.readValue(messageBody, ImageDto.class);
+        ImagesDto images = objectmapper.readValue(messageBody, ImagesDto.class);
 
         return images;
     }
